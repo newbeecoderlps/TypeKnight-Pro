@@ -1,0 +1,1070 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeKnight Pro | Elite Typing Ecosystem</title>
+    <style>
+        /* --- GRAPHICAL INTEGRATION VARIABLES --- */
+        :root {
+            --bg-base: #0b0f19;
+            --bg-surface: #151d30;
+            --bg-element: #1f2b44;
+            --border-glow: #2a3c5f;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --cyan-accent: #06b6d4;
+            --emerald-accent: #10b981;
+            --rose-accent: #f43f5e;
+            --amber-accent: #f59e0b;
+            --purple-accent: #8b5cf6;
+            --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-code: 'Fira Code', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-ui);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* --- STRUCTURED APP BAR HEADER --- */
+        header {
+            background-color: var(--bg-surface);
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-glow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-zone {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .brand-zone:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-zone h1 {
+            color: var(--cyan-accent);
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .utility-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- THE PROGRESSIVE PROFILE HUB --- */
+        .profile-matrix-card {
+            background: linear-gradient(135deg, var(--bg-surface), #1a243d);
+            padding: 25px;
+            border-radius: 14px;
+            margin: 35px 0;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .matrix-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .level-badge {
+            background-color: var(--cyan-accent);
+            color: var(--bg-base);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .xp-numerical {
+            font-family: var(--font-code);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .gauge-track {
+            background-color: var(--bg-base);
+            width: 100%;
+            height: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 2px;
+            border: 1px solid var(--border-glow);
+        }
+
+        .gauge-hardware-fill {
+            background: linear-gradient(90deg, var(--cyan-accent), var(--emerald-accent));
+            width: 0%;
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* --- APP WORKSPACE CONTAINER --- */
+        .workspace-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* --- INTERACTIVE ACTION TABS --- */
+        .navigation-dock {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-glow);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .dock-trigger {
+            background: none;
+            color: var(--text-secondary);
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .dock-trigger:hover {
+            color: var(--text-primary);
+            background-color: var(--bg-surface);
+        }
+
+        .dock-trigger.active-route {
+            color: var(--cyan-accent);
+            background-color: var(--bg-surface);
+            box-shadow: inset 0 -2px 0 var(--cyan-accent);
+        }
+
+        .view-panel-route {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .view-panel-route.active-route {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- COMPONENT: LESSONS & SPEED TESTS --- */
+        .grid-architecture {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .data-node-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .data-node-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--cyan-accent);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.15);
+        }
+
+        .data-node-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--cyan-accent);
+        }
+
+        .test-card {
+            border-color: var(--purple-accent);
+        }
+        .test-card h3 {
+            color: var(--purple-accent);
+        }
+        .test-card:hover {
+            border-color: var(--purple-accent);
+            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+        }
+
+        /* --- COMPONENT: LIVE TYPING ARENA --- */
+        .arena-console {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 40px;
+            position: relative;
+        }
+
+        .dashboard-telemetry {
+            display: flex;
+            justify-content: space-around;
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .telemetry-node {
+            text-align: center;
+        }
+
+        .telemetry-lbl {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .telemetry-val {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--cyan-accent);
+            font-family: var(--font-code);
+        }
+
+        .typographic-viewport {
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-glow);
+            padding: 25px 30px;
+            border-radius: 10px;
+            font-family: var(--font-code);
+            font-size: 24px;
+            letter-spacing: 1px;
+            line-height: 1.8;
+            text-align: left;
+            margin-bottom: 35px;
+            min-height: 150px;
+            word-break: break-word;
+            user-select: none;
+            outline: none;
+        }
+
+        .character-node {
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .char-success { color: var(--emerald-accent); }
+        .char-failure {
+            color: var(--rose-accent);
+            background-color: rgba(244, 63, 94, 0.15);
+            border-radius: 4px;
+        }
+        .char-caret-head {
+            color: var(--text-primary);
+            background-color: rgba(6, 182, 212, 0.25);
+            box-shadow: -2px 0 0 var(--cyan-accent);
+            animation: pulseCaret 1s infinite alternate;
+        }
+
+        @keyframes pulseCaret {
+            from { background-color: rgba(6, 182, 212, 0.25); }
+            to { background-color: rgba(6, 182, 212, 0.05); }
+        }
+
+        .hidden-keystroke-valve {
+            position: absolute;
+            opacity: 0;
+            z-index: -999;
+        }
+
+        /* --- COMPONENT: LEADERBOARD --- */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .leaderboard-table th {
+            background-color: var(--bg-element);
+            color: var(--cyan-accent);
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard-table tr:hover {
+            background-color: var(--bg-element);
+        }
+
+        .rank-1 { color: #fbbf24; font-weight: bold; }
+        .rank-2 { color: #94a3b8; font-weight: bold; }
+        .rank-3 { color: #b45309; font-weight: bold; }
+
+        .player-row {
+            background-color: rgba(6, 182, 212, 0.05);
+            border-left: 4px solid var(--cyan-accent);
+        }
+
+        /* --- COMPONENT: ARCADE CABINENT --- */
+        .arcade-cabinet {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .canvas-render-theater {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            background-color: var(--bg-base);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            margin-bottom: 25px;
+            box-shadow: inset 0 4px 30px rgba(0,0,0,0.5);
+        }
+
+        .projectile-word {
+            position: absolute;
+            font-family: var(--font-code);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            background-color: var(--bg-element);
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-glow);
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        .arcade-terminal-input {
+            width: 50%;
+            display: block;
+            margin: 0 auto;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            border: 2px solid var(--border-glow);
+            padding: 16px 24px;
+            font-size: 20px;
+            font-family: var(--font-code);
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+        }
+
+        .arcade-terminal-input:focus {
+            border-color: var(--cyan-accent);
+        }
+
+        /* --- BUTTONS & TOGGLES --- */
+        .action-button {
+            background-color: var(--cyan-accent);
+            color: var(--bg-base);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .action-button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+            box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
+        }
+
+        .button-secondary {
+            background-color: var(--bg-element);
+            color: var(--text-primary);
+            border: 1px solid var(--border-glow);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--border-glow);
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .switch-input {
+            cursor: pointer;
+            width: 40px;
+            height: 20px;
+            appearance: none;
+            background-color: var(--bg-element);
+            border-radius: 10px;
+            position: relative;
+            outline: none;
+            border: 1px solid var(--border-glow);
+            transition: background-color 0.3s;
+        }
+
+        .switch-input:checked {
+            background-color: var(--emerald-accent);
+        }
+
+        .switch-input::before {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            background-color: var(--text-primary);
+            transition: transform 0.3s;
+        }
+
+        .switch-input:checked::before {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-zone" onclick="navigateToRoute('home')">
+            <!-- Subtle, abstract Knight Helmet SVG -->
+            <svg width="36" height="36" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 15 30 L 50 10 L 85 30 L 85 65 C 85 85, 50 95, 50 95 C 50 95, 15 85, 15 65 Z" fill="#151d30" stroke="#06b6d4" stroke-width="6" stroke-linejoin="round"/>
+                <path d="M 35 45 L 65 45 M 50 45 L 50 75" stroke="#06b6d4" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+            <h1>TypeKnight Pro</h1>
+        </div>
+        <div class="utility-controls">
+            <div class="toggle-container">
+                <span>AUDIO ENGINE</span>
+                <input type="checkbox" id="audio-toggle-switch" class="switch-input" checked>
+            </div>
+            <div style="font-family: var(--font-code); color: var(--text-secondary); font-size: 14px;">SYS.OP.NORMAL</div>
+        </div>
+    </header>
+
+    <div class="workspace-wrapper">
+        <!-- Persistent Profile Tracking Module Matrix -->
+        <div class="profile-matrix-card">
+            <div class="matrix-meta">
+                <span id="profile-rank-badge" class="level-badge">Level 1 Novice</span>
+                <span id="profile-numerical-xp" class="xp-numerical">0 / 250 XP</span>
+            </div>
+            <div class="gauge-track">
+                <div id="profile-gauge-fill" class="gauge-hardware-fill"></div>
+            </div>
+        </div>
+
+        <!-- Navigation Context Router Menu Links -->
+        <div class="navigation-dock">
+            <button class="dock-trigger active-route" onclick="navigateToRoute('home')">Training Fundamentals</button>
+            <button class="dock-trigger" onclick="navigateToRoute('speed')">Speed Tests</button>
+            <button class="dock-trigger" onclick="navigateToRoute('arena')">Tactical Arena</button>
+            <button class="dock-trigger" onclick="navigateToRoute('game')">Arcade Mode</button>
+            <button class="dock-trigger" onclick="navigateToRoute('leaderboard')">Global Leaderboard</button>
+        </div>
+
+        <!-- VIEW 1: HOME / FUNDAMENTALS CATALOG -->
+        <div id="route-home" class="view-panel-route active-route">
+            <h2 style="margin-bottom: 20px; font-size: 22px;">Curriculum Catalog</h2>
+            <div class="grid-architecture" id="curriculum-injection-box">
+                <!-- System dynamically appends nodes here -->
+            </div>
+        </div>
+
+        <!-- VIEW 2: SPEED TEST SUITE -->
+        <div id="route-speed" class="view-panel-route">
+            <h2 style="margin-bottom: 20px; font-size: 22px; color: var(--purple-accent);">Advanced Speed & Endurance Tests</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px;">Push your limits with dynamically generated algorithmic tests designed to break comfort zones.</p>
+            
+            <div class="grid-architecture">
+                <div class="data-node-card test-card" onclick="generateTestTarget('words')">
+                    <div>
+                        <h3>Standard Word Sprint</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary);">A randomized stream of 30 common dictionary words. Pure velocity.</p>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: var(--purple-accent); font-weight: 700;">Reward: Base + Bonus XP</div>
+                </div>
+
+                <div class="data-node-card test-card" onclick="generateTestTarget('essay')">
+                    <div>
+                        <h3>Endurance Essay Module</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary);">Type out a structured historical or technical paragraph. Tests punctuation and capitalization.</p>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: var(--purple-accent); font-weight: 700;">Reward: High XP Yield</div>
+                </div>
+
+                <div class="data-node-card test-card" onclick="generateTestTarget('chaos')">
+                    <div>
+                        <h3>Random Chaos String</h3>
+                        <p style="font-size: 14px; color: var(--text-secondary);">Alphanumeric noise and heavy symbol integration. The ultimate accuracy check.</p>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: var(--purple-accent); font-weight: 700;">Reward: Massive XP Yield</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: LIVE TYPING ARENA -->
+        <div id="route-arena" class="view-panel-route">
+            <div class="arena-console" onclick="forceFocusArenaEngine()">
+                <div class="dashboard-telemetry">
+                    <div class="telemetry-node">
+                        <div class="telemetry-lbl">Velocity Metrics</div>
+                        <div id="telemetry-wpm-box" class="telemetry-val">00</div>
+                    </div>
+                    <div class="telemetry-node">
+                        <div class="telemetry-lbl">Accuracy Threshold</div>
+                        <div id="telemetry-accuracy-box" class="telemetry-val">100%</div>
+                    </div>
+                    <div class="telemetry-node">
+                        <div class="telemetry-lbl">Temporal Interval</div>
+                        <div id="telemetry-clock-box" class="telemetry-val">00s</div>
+                    </div>
+                </div>
+
+                <input type="text" id="arena-hardware-capture-input" class="hidden-keystroke-valve" autocomplete="off" autocapitalize="off" spellcheck="false">
+                
+                <div id="arena-typographic-matrix" class="typographic-viewport" tabindex="0">
+                    Awaiting Target Data... Select a curriculum syllabus or speed test to engage.
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <button class="action-button" onclick="hardResetArenaEngine()">Re-Initialize Routine</button>
+                    <button class="action-button button-secondary" onclick="navigateToRoute('home')">Abort Mission</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 4: ARCADE SYSTEM ENGINE -->
+        <div id="route-game" class="view-panel-route">
+            <div class="arcade-cabinet">
+                <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; margin-bottom: 15px; padding: 0 10px;">
+                    <div id="arcade-score-board" style="color: var(--cyan-accent);">Points: 0000</div>
+                    <div id="arcade-shield-board" style="color: var(--rose-accent);">Shield Matrix: 🛡️ 🛡️ 🛡️</div>
+                </div>
+
+                <div id="arcade-theater-stage" class="canvas-render-theater"></div>
+
+                <input type="text" id="arcade-terminal-keystroke-pipe" class="arcade-terminal-input" placeholder="Awaiting Engine Activation..." autocomplete="off" disabled>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button id="arcade-system-toggle-btn" class="action-button" onclick="igniteArcadeCabinetLoop()">Boot Arcade Interface</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 5: LEADERBOARD -->
+        <div id="route-leaderboard" class="view-panel-route">
+            <h2 style="margin-bottom: 20px; font-size: 22px;">Global Typist Rankings</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px;">Top performers ranked by peak recorded WPM metrics.</p>
+            
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Callsign</th>
+                        <th>Level</th>
+                        <th>Peak WPM</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Injected via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- --- APP CORE LOGIC SUBSYSTEM --- -->
+    <script>
+        /* --- HARDCORE LEVELING CONSTANTS --- */
+        const BASE_XP_REQUIREMENT = 250;
+        const HARDCORE_XP_MULTIPLIER = 2.0;
+
+        /* --- DATA POOLS WITH SENSIBLE PROSE --- */
+        const MASTER_SYLLABI_DICTIONARY = [
+            { id: "syl-1", title: "Fundamentals & Posture", text: "Good posture prevents fatigue. Keep your wrists elevated and your back straight. When you type with confidence, you make fewer mistakes.", xpWorth: 50 },
+            { id: "syl-2", title: "Rhythm & Consistency", text: "The quick brown fox jumps over the lazy dog. Consistency and steady rhythm build muscle memory over time, ensuring your hands know exactly where to travel.", xpWorth: 60 },
+            { id: "syl-3", title: "Punctuation & Flow", text: "Are you ready to type faster? Focus on hitting the correct keys first! Speed will eventually come once your accuracy reaches a masterful, consistent level.", xpWorth: 70 },
+            { id: "syl-4", title: "Cognitive Processing", text: "A skilled typist does not think about individual letters. Instead, the mind processes entire words and sentences seamlessly as a single thought flow.", xpWorth: 120 }
+        ];
+
+        const WORD_DICTIONARY = ["mountain", "sunlight", "journey", "ocean", "whisper", "galaxy", "courage", "harmony", "silence", "velocity", "rhythm", "balance", "mystery", "wonder", "horizon", "breathe", "energy", "nature", "forest", "season", "memory", "shadow", "future", "vision", "spirit", "dream", "freedom", "purpose", "passion", "success"];
+
+        const ESSAY_POOL = [
+            "The human body is an incredibly complex machine made up of many different systems working together to keep us alive and healthy. One of the most important systems is the nervous system, which controls and coordinates all of our body's functions.",
+            "Science helps us understand the world in many ways. By observing and testing things around us, we can make discoveries about how things work. We have learned that animals adapt over time to help them survive in changing environments.",
+            "Studying is the main source of knowledge. Books are indeed never-failing friends. For a mature mind, reading is the greatest source of pleasure and solace to distressed minds. The study of good books broadens our outlook on life."
+        ];
+
+        const MOCK_LEADERBOARD = [
+            { name: "PhantomKey", level: 42, wpm: 185 },
+            { name: "NeoMatrix", level: 38, wpm: 162 },
+            { name: "GhostTyper", level: 31, wpm: 144 },
+            { name: "SyntaxError", level: 25, wpm: 120 },
+            { name: "ByteMe", level: 19, wpm: 98 }
+        ];
+
+        /* --- GLOBAL APPLICATION MEMORY PROFILES --- */
+        let userStatsProfile = { xp: 0, level: 1, xpScaleCeiling: BASE_XP_REQUIREMENT, topWPM: 0 };
+        let arenaSessionState = { currentLessonId: null, activeTextSource: "", sequenceArray: [], pointerIndex: 0, clockIntervalId: null, startTimeObj: null, dynamicErrorsCount: 0, activityRunning: false, calculatedXpWorth: 0 };
+        let arcadeRuntimeState = { loopActive: false, tallyScore: 0, integrityShields: 3, trackingProjectiles: [], deploymentIntervalId: null, paintFrameId: null, downwardVelocity: 1.0 };
+        let audioCtxInstance = null;
+
+        /* --- INITIALIZATION --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSavedProfileData();
+            buildCurriculumCatalogUI();
+            synchronizeDashboardDisplays();
+            renderLeaderboard();
+            
+            document.getElementById('arena-hardware-capture-input').addEventListener('input', interceptArenaHardwareInput);
+            document.getElementById('arcade-terminal-keystroke-pipe').addEventListener('input', interceptArcadeKeystrokeStream);
+        });
+
+        /* --- AUDIO ENGINE --- */
+        function triggerAudioFrequencyTone(pitch, structuralDuration, waveType = 'sine') {
+            if (!document.getElementById('audio-toggle-switch').checked) return;
+            try {
+                if (!audioCtxInstance) audioCtxInstance = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillatorNode = audioCtxInstance.createOscillator();
+                const gainVolumeNode = audioCtxInstance.createGain();
+
+                oscillatorNode.type = waveType;
+                oscillatorNode.frequency.setValueAtTime(pitch, audioCtxInstance.currentTime);
+                gainVolumeNode.gain.setValueAtTime(0.1, audioCtxInstance.currentTime);
+                gainVolumeNode.gain.exponentialRampToValueAtTime(0.00001, audioCtxInstance.currentTime + structuralDuration);
+                
+                oscillatorNode.connect(gainVolumeNode);
+                gainVolumeNode.connect(audioCtxInstance.destination);
+                
+                oscillatorNode.start();
+                oscillatorNode.stop(audioCtxInstance.currentTime + structuralDuration);
+            } catch (e) { /* ignore silent failure */ }
+        }
+
+        /* --- PROFILE MGMT & HARDCORE LEVELING --- */
+        function loadSavedProfileData() {
+            const profileCache = localStorage.getItem('typeknight_pro_v3');
+            if (profileCache) userStatsProfile = JSON.parse(profileCache);
+            if (!userStatsProfile.xpScaleCeiling) userStatsProfile.xpScaleCeiling = BASE_XP_REQUIREMENT;
+        }
+
+        function writeProfileToCache() {
+            localStorage.setItem('typeknight_pro_v3', JSON.stringify(userStatsProfile));
+        }
+
+        function synchronizeDashboardDisplays() {
+            document.getElementById('profile-rank-badge').innerText = `Level ${userStatsProfile.level} Sentinel`;
+            document.getElementById('profile-numerical-xp').innerText = `${userStatsProfile.xp} / ${userStatsProfile.xpScaleCeiling} XP`;
+            const gaugePercentage = (userStatsProfile.xp / userStatsProfile.xpScaleCeiling) * 100;
+            document.getElementById('profile-gauge-fill').style.width = `${gaugePercentage}%`;
+            renderLeaderboard(); 
+        }
+
+        function rewardExperiencePoints(xpPoints) {
+            userStatsProfile.xp += xpPoints;
+            while (userStatsProfile.xp >= userStatsProfile.xpScaleCeiling) {
+                userStatsProfile.xp -= userStatsProfile.xpScaleCeiling;
+                userStatsProfile.level++;
+                userStatsProfile.xpScaleCeiling = Math.floor(userStatsProfile.xpScaleCeiling * HARDCORE_XP_MULTIPLIER);
+                triggerAudioFrequencyTone(880, 0.4, 'triangle');
+                alert(`⚡ Promotion Acquired! You are now Level ${userStatsProfile.level}!`);
+            }
+            writeProfileToCache();
+            synchronizeDashboardDisplays();
+        }
+
+        /* --- ROUTING --- */
+        function navigateToRoute(targetRouteId) {
+            document.querySelectorAll('.view-panel-route').forEach(el => el.classList.remove('active-route'));
+            document.querySelectorAll('.dock-trigger').forEach(el => el.classList.remove('active-route'));
+
+            document.getElementById(`route-${targetRouteId}`).classList.add('active-route');
+            
+            const triggers = document.querySelectorAll('.dock-trigger');
+            if (targetRouteId === 'home') triggers[0].classList.add('active-route');
+            if (targetRouteId === 'speed') triggers[1].classList.add('active-route');
+            if (targetRouteId === 'arena') triggers[2].classList.add('active-route');
+            if (targetRouteId === 'game') triggers[3].classList.add('active-route');
+            if (targetRouteId === 'leaderboard') triggers[4].classList.add('active-route');
+
+            teardownArenaOperationalThreads();
+            terminateArcadeLoopEngines();
+        }
+
+        /* --- CATALOG & GENERATORS --- */
+        function buildCurriculumCatalogUI() {
+            const displayShelf = document.getElementById('curriculum-injection-box');
+            displayShelf.innerHTML = "";
+
+            MASTER_SYLLABI_DICTIONARY.forEach(syl => {
+                const nodeCard = document.createElement('div');
+                nodeCard.className = 'data-node-card';
+                nodeCard.onclick = () => launchSelectedSyllabusInArena(syl);
+                nodeCard.innerHTML = `
+                    <div>
+                        <h3>${syl.title}</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary);">"${syl.text.substring(0, 40)}..."</p>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: var(--emerald-accent); font-weight: 700;">Reward Potential: +${syl.xpWorth} XP</div>
+                `;
+                displayShelf.appendChild(nodeCard);
+            });
+        }
+
+        function generateTestTarget(type) {
+            let generatedText = "";
+            let xpReward = 0;
+
+            if (type === 'words') {
+                let shuffled = WORD_DICTIONARY.sort(() => 0.5 - Math.random());
+                generatedText = shuffled.slice(0, 25).join(' ');
+                xpReward = 150;
+            } else if (type === 'essay') {
+                generatedText = ESSAY_POOL[Math.floor(Math.random() * ESSAY_POOL.length)];
+                xpReward = 200;
+            } else if (type === 'chaos') {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+                for (let i = 0; i < 150; i++) {
+                    generatedText += chars.charAt(Math.floor(Math.random() * chars.length));
+                    if (i % 6 === 0 && i !== 0) generatedText += " "; 
+                }
+                xpReward = 400; 
+            }
+
+            launchSelectedSyllabusInArena({
+                id: `test-${type}-${Date.now()}`,
+                title: `Dynamically Generated ${type.toUpperCase()} Test`,
+                text: generatedText.trim(),
+                xpWorth: xpReward
+            });
+        }
+
+        /* --- ARENA ENGINE --- */
+        function launchSelectedSyllabusInArena(syllabusObject) {
+            arenaSessionState.currentLessonId = syllabusObject.id;
+            arenaSessionState.activeTextSource = syllabusObject.text;
+            arenaSessionState.calculatedXpWorth = syllabusObject.xpWorth;
+
+            navigateToRoute('arena');
+            hardResetArenaEngine();
+        }
+
+        function forceFocusArenaEngine() {
+            document.getElementById('arena-hardware-capture-input').focus();
+        }
+
+        function hardResetArenaEngine() {
+            teardownArenaOperationalThreads();
+            if (!arenaSessionState.activeTextSource) return;
+
+            arenaSessionState.pointerIndex = 0;
+            arenaSessionState.dynamicErrorsCount = 0;
+            arenaSessionState.activityRunning = false;
+            arenaSessionState.startTimeObj = null;
+
+            document.getElementById('telemetry-wpm-box').innerText = "00";
+            document.getElementById('telemetry-accuracy-box').innerText = "100%";
+            document.getElementById('telemetry-clock-box').innerText = "00s";
+
+            const matrixStage = document.getElementById('arena-typographic-matrix');
+            matrixStage.innerHTML = "";
+
+            arenaSessionState.sequenceArray = arenaSessionState.activeTextSource.split('');
+            arenaSessionState.sequenceArray.forEach((char, index) => {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'character-node';
+                if (index === 0) charSpan.classList.add('char-caret-head');
+                charSpan.innerText = char;
+                matrixStage.appendChild(charSpan);
+            });
+
+            forceFocusArenaEngine();
+        }
+
+        function teardownArenaOperationalThreads() {
+            if (arenaSessionState.clockIntervalId) {
+                clearInterval(arenaSessionState.clockIntervalId);
+                arenaSessionState.clockIntervalId = null;
+            }
+            document.getElementById('arena-hardware-capture-input').value = "";
+        }
+
+        function interceptArenaHardwareInput(event) {
+            if (arenaSessionState.pointerIndex >= arenaSessionState.sequenceArray.length) return;
+
+            if (!arenaSessionState.activityRunning) {
+                arenaSessionState.activityRunning = true;
+                arenaSessionState.startTimeObj = new Date();
+                arenaSessionState.clockIntervalId = setInterval(processArenaRuntimeClockCycle, 1000);
+            }
+
+            const currentBufferVal = event.target.value;
+            const singleExtractedChar = currentBufferVal.charAt(currentBufferVal.length - 1);
+            
+            const structuredDomNodes = document.getElementById('arena-typographic-matrix').children;
+            const absoluteExpectedChar = arenaSessionState.sequenceArray[arenaSessionState.pointerIndex];
+
+            if (singleExtractedChar === absoluteExpectedChar) {
+                structuredDomNodes[arenaSessionState.pointerIndex].className = 'character-node char-success';
+                triggerAudioFrequencyTone(600, 0.05, 'sine');
+            } else {
+                structuredDomNodes[arenaSessionState.pointerIndex].className = 'character-node char-failure';
+                arenaSessionState.dynamicErrorsCount++;
+                triggerAudioFrequencyTone(180, 0.15, 'sawtooth');
+            }
+
+            arenaSessionState.pointerIndex++;
+
+            if (arenaSessionState.pointerIndex < arenaSessionState.sequenceArray.length) {
+                structuredDomNodes[arenaSessionState.pointerIndex].classList.add('char-caret-head');
+            } else {
+                evaluateAndFinalizeArenaRun();
+            }
+
+            calculateLiveArenaTelemetry();
+        }
+
+        function processArenaRuntimeClockCycle() {
+            if (!arenaSessionState.startTimeObj) return;
+            const elapsedSeconds = Math.floor((new Date() - arenaSessionState.startTimeObj) / 1000);
+            document.getElementById('telemetry-clock-box').innerText = `${elapsedSeconds}s`;
+            calculateLiveArenaTelemetry();
+        }
+
+        function calculateLiveArenaTelemetry() {
+            if (arenaSessionState.pointerIndex === 0) return;
+            const timeSliceSec = Math.max(1, Math.floor((new Date() - arenaSessionState.startTimeObj) / 1000));
+            const calculatedWPM = Math.round((arenaSessionState.pointerIndex / 5) / (timeSliceSec / 60));
+            const currentAccuracyPercentage = Math.round(((arenaSessionState.pointerIndex - arenaSessionState.dynamicErrorsCount) / arenaSessionState.pointerIndex) * 100);
+
+            document.getElementById('telemetry-wpm-box').innerText = calculatedWPM;
+            document.getElementById('telemetry-accuracy-box').innerText = `${Math.max(0, currentAccuracyPercentage)}%`;
+        }
+
+        function evaluateAndFinalizeArenaRun() {
+            teardownArenaOperationalThreads();
+            
+            const computationTimeSlice = Math.max(1, Math.floor((new Date() - arenaSessionState.startTimeObj) / 1000));
+            const finalWpmScore = Math.round((arenaSessionState.pointerIndex / 5) / (computationTimeSlice / 60));
+            const finalAccuracyPercentage = Math.round(((arenaSessionState.pointerIndex - arenaSessionState.dynamicErrorsCount) / arenaSessionState.pointerIndex) * 100);
+
+            alert(`📊 Module Completed!\nSpeed: ${finalWpmScore} WPM\nAccuracy: ${finalAccuracyPercentage}%`);
+
+            if (finalAccuracyPercentage >= 80) {
+                if (finalWpmScore > userStatsProfile.topWPM) {
+                    userStatsProfile.topWPM = finalWpmScore;
+                }
+                rewardExperiencePoints(arenaSessionState.calculatedXpWorth);
+            } else {
+                alert("Accuracy below 80% threshold. System rewards locked.");
+            }
+
+            writeProfileToCache();
+            synchronizeDashboardDisplays();
+        }
+
+        /* --- LEADERBOARD LOGIC --- */
+        function renderLeaderboard() {
+            const tableBody = document.getElementById('leaderboard-body');
+            tableBody.innerHTML = "";
+
+            let combinedList = [...MOCK_LEADERBOARD, { 
+                name: "YOU (Local)", 
+                level: userStatsProfile.level, 
+                wpm: userStatsProfile.topWPM,
+                isPlayer: true
+            }];
+
+            combinedList.sort((a, b) => b.wpm - a.wpm);
+
+            combinedList.forEach((entry, index) => {
+                const tr = document.createElement('tr');
+                if (entry.isPlayer) tr.className = 'player-row';
+                
+                let rankClass = "";
+                if (index === 0) rankClass = "rank-1";
+                if (index === 1) rankClass = "rank-2";
+                if (index === 2) rankClass = "rank-3";
+
+                tr.innerHTML = `
+                    <td class="${rankClass}">#${index + 1}</td>
+                    <td style="font-weight: ${entry.isPlayer ? 'bold' : 'normal'}">${entry.name}</td>
+                    <td>Level ${entry.level}</td>
+                    <td style="color: var(--cyan-accent); font-family: var(--font-code); font-weight: bold;">${entry.wpm} WPM</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        /* --- ARCADE ENGINE --- */
+        function igniteArcadeCabinetLoop() {
+            if (arcadeRuntimeState.loopActive) return;
+            arcadeRuntimeState.loopActive = true;
+            arcadeRuntimeState.tallyScore = 0;
+            arcadeRuntimeState.integrityShields = 3;
+            arcadeRuntimeState.trackingProjectiles = [];
+            arcadeRuntimeState.downwardVelocity = 1.0;
+
+            document.getElementById('arcade-score-board').innerText = `Points: 0000`;
+            document.getElementById('arcade-shield-board').innerText = `Shield Matrix: 🛡️ 🛡️ 🛡️`;
+            document.getElementById('arcade-theater-stage').innerHTML = "";
+            
+            const terminalInput = document.getElementById('arcade-terminal-keystroke-pipe');
+            terminalInput.disabled = false;
+            terminalInput.value = "";
+            terminalInput.placeholder = "Defend the mainframe...";
+            terminalInput.focus();
+
+            document.getElementById('arcade-system-toggle-btn').disabled = true;
+
+            arcadeRuntimeState.deploymentIntervalId = setInterval(spawnArcadeProjectileNode, 2200);
+            arcadeRuntimeState.paintFrameId = requestAnimationFrame(executeArcadePhysicsRasterEngine);
+        }
+
+        function spawnArcadeProjectileNode() {
+            const stringToken = WORD_DICTIONARY[Math.floor(Math.random() * WORD_DICTIONARY.length)];
+            const theaterElement = document.getElementById('arcade-theater-stage');
+            const extremeXBound = theaterElement.clientWidth - 120;
+            const randomizedXPosition = Math.max(60, Math.floor(Math.random() * extremeXBound));
+
+            const projectileDomNode = document.createElement('div');
+            projectileDomNode.className = 'projectile-word';
+            projectileDomNode.innerText = stringToken;
+            projectileDomNode.style.left = `${randomizedXPosition}px`;
+            projectileDomNode.style.top = '0px';
+
+            theaterElement.appendChild(projectileDomNode);
+
+            arcadeRuntimeState.trackingProjectiles.push({
+                text: stringToken,
+                vectorY: 0,
+                domReference: projectileDomNode
+            });
+        }
+
+        function executeArcadePhysicsRasterEngine() {
+            if (!arcadeRuntimeState.loopActive) return;
+            const frameworkStageHeight = document.getElementById('arcade-theater-stage').clientHeight;
+
+            for (let idx = arcadeRuntimeState.trackingProjectiles.length - 1; idx >= 0; idx--) {
+                let dynamicProjectile = arcadeRuntimeState.trackingProjectiles[idx];
+                dynamicProjectile.vectorY += arcadeRuntimeState.downwardVelocity;
+                dynamicProjectile.domReference.style.top = `${dynamicProjectile.vectorY}px`;
+
+                if (dynamicProjectile.vectorY >= (frameworkStageHeight - 34)) {
+                    dynamicProjectile.domReference.remove();
+                    arcadeRuntimeState.trackingProjectiles.splice(idx, 1);
+                    compromiseArcadeShieldIntegrity();
+                }
+            }
+
+            if (arcadeRuntimeState.loopActive) {
+                arcadeRuntimeState.paintFrameId = requestAnimationFrame(executeArcadePhysicsRasterEngine);
+            }
+        }
+
+        function interceptArcadeKeystrokeStream(event) {
+            const incomingSanitizedToken = event.target.value.trim().toLowerCase();
+            const targetedMatchIndex = arcadeRuntimeState.trackingProjectiles.findIndex(p => p.text.toLowerCase() === incomingSanitizedToken);
+
+            if (targetedMatchIndex !== -1) {
+                triggerAudioFrequencyTone(440, 0.08, 'sine');
+                arcadeRuntimeState.trackingProjectiles[targetedMatchIndex].domReference.style.backgroundColor = "var(--emerald-accent)";
+                
+                setTimeout(() => {
+                    if (arcadeRuntimeState.trackingProjectiles[targetedMatchIndex]) {
+                        arcadeRuntimeState.trackingProjectiles[targetedMatchIndex].domReference.remove();
+                        arcadeRuntimeState.trackingProjectiles.splice(targetedMatchIndex, 1);
+                    }
+                }, 40);
+
+                arcadeRuntimeState.tallyScore += 25;
+                document.getElementById('arcade-score-board').innerText = `Points: ${String(arcadeRuntimeState.tallyScore).padStart(4, '0')}`;
+                event.target.value = "";
+
+                if (arcadeRuntimeState.tallyScore % 100 === 0) arcadeRuntimeState.downwardVelocity += 0.25;
+                rewardExperiencePoints(5); 
+            }
+        }
+
+        function compromiseArcadeShieldIntegrity() {
+            arcadeRuntimeState.integrityShields--;
+            triggerAudioFrequencyTone(120, 0.3, 'sawtooth');
+            
+            let icons = "";
+            for (let s = 0; s < arcadeRuntimeState.integrityShields; s++) icons += "🛡️ ";
+            document.getElementById('arcade-shield-board').innerText = `Shield Matrix: ${icons || "⚠️ COMPROMISED"}`;
+
+            if (arcadeRuntimeState.integrityShields <= 0) {
+                terminateArcadeLoopEngines();
+                alert(`[CRITICAL] System Shield Integrity Total Failure.\nProcessing finalized at: ${arcadeRuntimeState.tallyScore} points.`);
+            }
+        }
+
+        function terminateArcadeLoopEngines() {
+            arcadeRuntimeState.loopActive = false;
+            if (arcadeRuntimeState.deploymentIntervalId) clearInterval(arcadeRuntimeState.deploymentIntervalId);
+            if (arcadeRuntimeState.paintFrameId) cancelAnimationFrame(arcadeRuntimeState.paintFrameId);
+            
+            const standardInputPipe = document.getElementById('arcade-terminal-keystroke-pipe');
+            standardInputPipe.disabled = true;
+            standardInputPipe.value = "";
+            standardInputPipe.placeholder = "Awaiting Engine Activation...";
+
+            document.getElementById('arcade-system-toggle-btn').disabled = false;
+            document.getElementById('arcade-theater-stage').innerHTML = "";
+            arcadeRuntimeState.trackingProjectiles = [];
+        }
+    </script>
+</body>
+</html>
+
+```
